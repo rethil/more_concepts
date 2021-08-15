@@ -3,6 +3,7 @@
 #include <concepts>
 #include <initializer_list>
 #include <iterator>
+#include <tuple>
 #include <utility>
 
 #include "more_concepts/base_concepts.hpp"

@@ -29,6 +29,11 @@ namespace more_concepts
         using iterator_category = IteratorCategory;
         using difference_type = std::ptrdiff_t;
 
+        using deref_result = detail::mock_iterator_reference_def<
+              T, IteratorCategory, std::same_as<RWCategory, mutable_iterator_tag>>::deref_result;
+        using arrow_result = detail::mock_iterator_reference_def<
+              T, IteratorCategory, std::same_as<RWCategory, mutable_iterator_tag>>::arrow_result;
+
         auto operator++() -> mock_iterator&;
 
         auto operator++(int) -> mock_iterator;
