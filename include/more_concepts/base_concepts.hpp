@@ -47,9 +47,8 @@ namespace more_concepts
     concept invocable_as =
     requires(Signatures& ... signatures)
     {
-        ([] <typename Ret, typename... Args>(auto(&)(Args...) -> Ret)
-        requires std::is_invocable_r_v<Ret, Fn, Args>
-        {}(signatures), ...);
+        requires std::conjunction_v<std::is_invocable<Fn, Signatures>...>;
+        requires(std::invoke_result_t<Fn, Signatures>{}, ...)->std::convertible_to;
     };
 
     /// Types that can be called with the function call operator using one or more function
@@ -58,11 +57,7 @@ namespace more_concepts
     concept callable_as =
     requires(Signatures& ... signatures)
     {
-        // Call operator checking is deferred to a type trait;
-        // doing it inline breaks the compiler (GCC 10.2)
-        ([] <typename Ret, typename... Args>(auto(&)(Args...) -> Ret)
-        requires detail::is_callable_r_v<Ret, Fn, Args...>
-        {}(signatures), ...);
+        requires(fn(signatures), ...)->std::same_as;
     };
 
     /// From https://en.cppreference.com/w/cpp/named_req/Hash:
